@@ -1,11 +1,13 @@
 package com.joy.smoothhttp.http;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.joy.smoothhttp.http.data.BaseResult;
 import com.joy.smoothhttp.request.Request;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -23,14 +25,14 @@ public class HttpUrlConnectionExecutor<TResult> extends AbstractHttpExecutor {
 
 
     @Override
-    public TResult execute() {
+    public BaseResult execute() {
         return execute(null);
     }
 
     @Override
-    public TResult execute(IRequestCallback requestCallback) {
-
-        Bitmap bitmap = null;
+    public BaseResult execute(IRequestCallback requestCallback) {
+        BaseResult baseResult = new BaseResult();
+        TResult tResult = null;
         HttpURLConnection con = null;
         Request request = getRequest();
         try {
@@ -44,17 +46,31 @@ public class HttpUrlConnectionExecutor<TResult> extends AbstractHttpExecutor {
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                bitmap = BitmapFactory.decodeStream(con.getInputStream());
+                //  bitmap = BitmapFactory.decodeStream(con.getInputStream());
+                tResult = (TResult) inputStreamToString(con.getInputStream());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            baseResult.setThrowable(e);
         } finally {
             if (con != null) {
                 con.disconnect();
             }
         }
-        TResult result = (TResult) bitmap;
-        return result;
+        baseResult.settResult(tResult);
+        return baseResult;
+    }
+
+    private String inputStreamToString(InputStream inputStream) throws IOException {
+
+        byte[] buffer = new byte[2048];
+        int readBytes = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((readBytes = inputStream.read(buffer)) > 0) {
+            stringBuilder.append(new String(buffer, 0, readBytes));
+        }
+        return stringBuilder.toString();
+
     }
 }

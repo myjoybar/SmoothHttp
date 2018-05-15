@@ -3,6 +3,7 @@ package com.joy.smoothhttp.call;
 import android.util.Log;
 
 import com.joy.smoothhttp.http.HttpFactorySelector;
+import com.joy.smoothhttp.http.data.BaseResult;
 import com.joy.smoothhttp.request.Request;
 
 import me.joy.async.lib.task.AsynchronousTask;
@@ -21,7 +22,7 @@ public class AsyncCall<TResponse> {
 	public AsyncCall(final ICall iCall, final Request request, final Callback<TResponse> callback) {
 		this.iCall = iCall;
 		this.callback = callback;
-		asynchronousTask = new AsynchronousTask<Void, TResponse>() {
+		asynchronousTask = new AsynchronousTask<Void, BaseResult>() {
 
 			@Override
 			protected void onPreExecute() {
@@ -29,10 +30,10 @@ public class AsyncCall<TResponse> {
 			}
 
 			@Override
-			protected TResponse doInBackground() {
+			protected BaseResult doInBackground() {
 				Log.d("MainActivity","doInBackground");
-				TResponse result = (TResponse) HttpFactorySelector.getInstance().get(request).execute();
-				return result;
+				BaseResult baseResult = HttpFactorySelector.getInstance().get(request).execute();
+				return baseResult;
 			}
 
 			@Override
@@ -42,10 +43,17 @@ public class AsyncCall<TResponse> {
 			}
 
 			@Override
-			protected void onPostExecute(TResponse tResponse) {
-				super.onPostExecute(tResponse);
-				callback.onResponse(iCall,tResponse);
-				Log.d("MainActivity","onPostExecute");
+			protected void onPostExecute(BaseResult baseResult) {
+				super.onPostExecute(baseResult);
+				if(baseResult.getThrowable()!=null){
+					Log.d("MainActivity","callback.onFailure"+baseResult.getThrowable().getMessage());
+					callback.onFailure(iCall,baseResult.getThrowable());
+				}else{
+					Log.d("MainActivity","callback.onResponse"+baseResult.getResult());
+					callback.onResponse(iCall, (TResponse) baseResult.getResult());
+
+				}
+
 			}
 		};
 	}
