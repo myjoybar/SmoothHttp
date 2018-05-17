@@ -2,6 +2,7 @@ package com.joy.smoothhttp;
 
 import com.joy.smoothhttp.call.ICall;
 import com.joy.smoothhttp.call.RealCall;
+import com.joy.smoothhttp.convert.Converter;
 import com.joy.smoothhttp.request.Request;
 
 /**
@@ -11,7 +12,8 @@ import com.joy.smoothhttp.request.Request;
 public class SmoothHttpClient implements ICall.Factory {
 
 	@Override
-	public ICall newCall(Request request) {
-		return new RealCall(this, request);
+	public ICall newCall(Request request,Converter converter) {
+		return new RealCall(this, request,converter);
 	}
+
 }

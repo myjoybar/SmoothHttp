@@ -6,7 +6,7 @@ import com.joy.smoothhttp.request.Request;
  * Created by joybar on 11/05/2018.
  */
 
-public class HttpFactorySelector {
+public class HttpFactorySelector{
 
     public HttpFactorySelector() {
 
@@ -35,6 +35,8 @@ public class HttpFactorySelector {
     }
 
     private AbstractHttpExecutor getDefaultLoader(Request request) {
+
+
         AbstractHttpExecutor abstractLoader = new HttpUrlConnectionExecutor(request);
         return abstractLoader;
     }
