@@ -1,26 +1,22 @@
 package com.joy.smoothhttp.response.body;
 
-import java.io.InputStream;
-
 /**
  * Created by joybar on 2018/5/16.
  */
 
 public class ResponseBody {
 
-	//	String string;
-//	byte[] bytes;
+//	String string;
 //	Reader charStream;
 //	Bitmap bitmap;
-	InputStream byteStream;
+//	InputStream byteStream;
+	byte[] bytes;
 
-	public InputStream getByteStream() {
-		return byteStream;
+	public byte[] getBytes() {
+		return bytes;
 	}
 
-	public void setByteStream(InputStream byteStream) {
-		this.byteStream = byteStream;
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
 	}
-
-
 }

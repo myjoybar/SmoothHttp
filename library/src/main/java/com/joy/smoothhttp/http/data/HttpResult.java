@@ -1,14 +1,12 @@
 package com.joy.smoothhttp.http.data;
 
-import java.io.InputStream;
-
 /**
  * Created by joybar on 15/05/2018.
  */
 
 public class HttpResult {
-	InputStream inputStream;
-	Throwable throwable;
+	private Throwable throwable;
+	private byte[] bytes;
 
 	public HttpResult() {
 	}
@@ -21,11 +19,11 @@ public class HttpResult {
 		this.throwable = throwable;
 	}
 
-	public InputStream getInputStream() {
-		return inputStream;
+	public byte[] getBytes() {
+		return bytes;
 	}
 
-	public void setInputStream(InputStream inputStream) {
-		this.inputStream = inputStream;
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
 	}
 }

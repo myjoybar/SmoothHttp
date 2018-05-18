@@ -7,8 +7,8 @@ import com.joy.smoothhttp.response.body.ResponseBody;
  */
 
 public class Response {
-	ResponseBody responseBody;
-	Throwable throwable;
+	private ResponseBody responseBody;
+	private Throwable throwable;
 	public ResponseBody getResponseBody() {
 		return responseBody;
 	}

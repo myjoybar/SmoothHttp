@@ -1,16 +1,18 @@
 package com.joy.http;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.joy.http.data.Weather;
 import com.joy.smoothhttp.SmoothHttpClient;
 import com.joy.smoothhttp.call.Callback;
 import com.joy.smoothhttp.call.ICall;
+import com.joy.smoothhttp.convert.BitmapConverter;
 import com.joy.smoothhttp.convert.GsonConverter;
 import com.joy.smoothhttp.convert.StringConverter;
 import com.joy.smoothhttp.request.Request;
+import com.joy.smoothhttp.utils.SLog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		testConnect1();
-		//testConnect2();
+		testConnect2();
 		test3();
+		testConnect4();
 	}
 
 	private void testConnect1(){
@@ -37,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
 		call.submit(new Callback<String>() {
 			@Override
 			public void onFailure(ICall call, Throwable throwable) {
-				Log.d(TAG,"onFailure="+throwable.getMessage());
+				SLog.print("onFailure="+throwable.getMessage());
 			}
 
 			@Override
 			public void onResponse(ICall call, String s) {
-				Log.d(TAG,"onResponse="+s);
+				SLog.print("onResponse="+s);
 			}
 		});
 
@@ -61,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
 		call.submit(new Callback<Weather>() {
 			@Override
 			public void onFailure(ICall call, Throwable throwable) {
-				Log.d(TAG,"onFailure="+throwable.getMessage());
+				SLog.print("onFailure="+throwable.getMessage());
 			}
 
 			@Override
 			public void onResponse(ICall call, Weather weather) {
-				Log.d(TAG,"onResponse="+weather.toString());
+				SLog.print("onResponse="+weather.toString());
 			}
 		});
 
@@ -76,6 +79,32 @@ public class MainActivity extends AppCompatActivity {
 		for(int i = 0;i<1000;i++){
 			testConnect2();
 		}
+	}
+
+
+	private void testConnect4(){
+
+		String url = "http://img.taopic.com/uploads/allimg/120727/201995-120HG1030762.jpg";
+
+		SmoothHttpClient smoothHttpClient = new SmoothHttpClient();
+		final Request request = new Request.Builder()
+				.setHttpUrl(url)
+				.build();
+
+
+		ICall<Bitmap> call = smoothHttpClient.newCall(request,new BitmapConverter());
+		call.submit(new Callback<Bitmap>() {
+			@Override
+			public void onFailure(ICall call, Throwable throwable) {
+				SLog.print("onFailure="+throwable.getMessage());
+			}
+
+			@Override
+			public void onResponse(ICall call, Bitmap s) {
+				SLog.print("onResponse="+s);;
+			}
+		});
+
 	}
 
 }

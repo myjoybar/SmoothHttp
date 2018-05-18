@@ -3,7 +3,6 @@ package com.joy.smoothhttp.convert;
 import com.joy.smoothhttp.utils.GsonUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -18,14 +17,8 @@ public class GsonListConverter<T> implements Converter<List<T>> {
 		this.type = type;
 	}
 	@Override
-	public List<T> convert(InputStream inputStream) throws IOException {
-		byte[] buffer = new byte[2048];
-		int readBytes = 0;
-		StringBuilder stringBuilder = new StringBuilder();
-		while ((readBytes = inputStream.read(buffer)) > 0) {
-			stringBuilder.append(new String(buffer, 0, readBytes));
-		}
-		String jsonStr = stringBuilder.toString();
+	public List<T> convert(byte[] bytes) throws IOException {
+		String jsonStr =  new String(bytes, "UTF-8");
 		return GsonUtil.parseJsonArrayStrToList(jsonStr, type);
 	}
 

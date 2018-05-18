@@ -1,13 +1,12 @@
 package com.joy.smoothhttp.call;
 
-import android.util.Log;
-
 import com.joy.smoothhttp.convert.Converter;
 import com.joy.smoothhttp.http.HttpFactorySelector;
 import com.joy.smoothhttp.http.data.HttpResult;
 import com.joy.smoothhttp.request.Request;
 import com.joy.smoothhttp.response.Response;
 import com.joy.smoothhttp.response.body.ResponseBody;
+import com.joy.smoothhttp.utils.SLog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +18,9 @@ import me.joy.async.lib.task.AsynchronousTask;
  */
 
 public class AsyncCall<TResponse> {
-	Callback<TResponse> callback;
-	AsynchronousTask asynchronousTask;
-	ICall iCall;
+	private Callback<TResponse> callback;
+	private AsynchronousTask asynchronousTask;
+	private ICall iCall;
 
 
 	public AsyncCall(final ICall iCall, final Request request, final Converter converter, final Callback<TResponse> callback) {
@@ -36,8 +35,7 @@ public class AsyncCall<TResponse> {
 
 			@Override
 			protected Response doInBackground() {
-				Log.d("MainActivity", "doInBackground");
-				//BaseResult baseResult = HttpFactorySelector.getInstance().get(request).execute();
+				SLog.print("doInBackground");
 				HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute();
 				Response response = new Response();
 				if (httpResult.getThrowable() != null) {
@@ -45,8 +43,7 @@ public class AsyncCall<TResponse> {
 					return response;
 				}
 				ResponseBody responseBody = new ResponseBody();
-				InputStream inputStream = httpResult.getInputStream();
-				responseBody.setByteStream(inputStream);
+				responseBody.setBytes(httpResult.getBytes());
 				response.setResponseBody(responseBody);
 				return response;
 			}
@@ -54,18 +51,18 @@ public class AsyncCall<TResponse> {
 			@Override
 			protected void onProgressUpdate(Void... values) {
 				super.onProgressUpdate(values);
-				Log.d("MainActivity", "onProgressUpdate");
+				SLog.print("onProgressUpdate");
 			}
 
 			@Override
 			protected void onPostExecute(Response response) {
 				super.onPostExecute(response);
 				if (response.getThrowable() != null) {
-					Log.d("MainActivity", "callback.onFailure" + response.getThrowable().getMessage());
+					SLog.print("callback.onFailure" + response.getThrowable().getMessage());
 					callback.onFailure(iCall, response.getThrowable());
 				} else {
 					try {
-						callback.onResponse(iCall, (TResponse) converter.convert(response.getResponseBody().getByteStream()));
+						callback.onResponse(iCall, (TResponse) converter.convert(response.getResponseBody().getBytes()));
 					} catch (IOException e) {
 						e.printStackTrace();
 						callback.onFailure(iCall, e);
@@ -79,6 +76,11 @@ public class AsyncCall<TResponse> {
 		asynchronousTask.execute();
 	}
 
+	public void cancel() {
+		if (null != asynchronousTask) {
+			asynchronousTask.cancel(false);
+		}
+	}
 
 //	private TResponse getResponseWithInterceptorChain() {
 //

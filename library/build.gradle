@@ -28,7 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    api 'com.joybar.asynchronoustask:library:1.0.5'
+    compile 'com.joybar.asynchronoustask:library:1.0.6'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }
 apply from: 'push.gradle'

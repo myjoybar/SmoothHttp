@@ -14,12 +14,14 @@ public final class Request {
 	private final RequestHeader header;
 	private final RequestBody requestBody;
 	private final String method;
+	private final int timeOut;
 
 	public Request(Builder builder) {
 		httpUrl = builder.httpUrl;
 		header = builder.header;
 		requestBody = builder.requestBody;
 		method = builder.method;
+		timeOut = builder.timeOut;
 	}
 
 
@@ -39,15 +41,19 @@ public final class Request {
 		return method;
 	}
 
+	public int getTimeOut() {
+		return timeOut;
+	}
+
 	public static class Builder {
 		HttpUrl httpUrl;
 		RequestHeader header;
 		RequestBody requestBody;
 		String method;
+		int timeOut = 5 * 1000;
 
 		public Builder setHttpUrl(String url) {
 			this.httpUrl = new HttpUrl.Builder().setUrl(url).build();
-			;
 			return this;
 		}
 
@@ -63,6 +69,11 @@ public final class Request {
 
 		public Builder setMethod(String method) {
 			this.method = method;
+			return this;
+		}
+
+		public Builder setTimeOut(int timeOut) {
+			this.timeOut = timeOut;
 			return this;
 		}
 

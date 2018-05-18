@@ -1,10 +1,12 @@
 package com.joy.smoothhttp.http;
 
-import android.util.Log;
-
 import com.joy.smoothhttp.http.data.HttpResult;
 import com.joy.smoothhttp.request.Request;
+import com.joy.smoothhttp.utils.SLog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -14,7 +16,6 @@ import java.net.URL;
 
 public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
 
-	public static String TAG = "HttpUrlConnectionExecutor";
 
 	public HttpUrlConnectionExecutor(Request requestOrder) {
 		super(requestOrder);
@@ -28,16 +29,16 @@ public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
 		Request request = getRequest();
 		try {
 			String urlStr = request.getHttpUrl().getUrl();
-			Log.d(TAG, "url=" + urlStr);
+			SLog.print("url=" + urlStr);
 			URL url = new URL(urlStr);
 			con = (HttpURLConnection) url.openConnection();
 			con.setConnectTimeout(3 * 1000);
-			con.setReadTimeout(10 * 1000);
+			con.setReadTimeout(request.getTimeOut());
 			con.setDoInput(true);
 			con.setRequestMethod("GET");
 			int responseCode = con.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				httpResult.setInputStream(con.getInputStream());
+				httpResult.setBytes(inputStream2ByteArr(con.getInputStream()));
 			}
 
 		} catch (Exception e) {
@@ -49,6 +50,18 @@ public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
 			}
 		}
 		return httpResult;
+	}
+
+	private static byte[] inputStream2ByteArr(InputStream inputStream) throws IOException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		byte[] buff = new byte[1024];
+		int len = 0;
+		while ((len = inputStream.read(buff)) != -1) {
+			outputStream.write(buff, 0, len);
+		}
+		inputStream.close();
+		outputStream.close();
+		return outputStream.toByteArray();
 	}
 
 

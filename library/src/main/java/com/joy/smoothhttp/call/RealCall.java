@@ -9,11 +9,12 @@ import com.joy.smoothhttp.request.Request;
  */
 
 public class RealCall<T> implements ICall {
-	SmoothHttpClient smoothHttpClient;
-	Request request;
-	Converter converter;
+	private SmoothHttpClient smoothHttpClient;
+	private Request request;
+	private Converter converter;
+	private AsyncCall asyncCall;
 
-	public RealCall(SmoothHttpClient smoothHttpClient, Request request,Converter<T> converter) {
+	public RealCall(SmoothHttpClient smoothHttpClient, Request request, Converter<T> converter) {
 		this.smoothHttpClient = smoothHttpClient;
 		this.request = request;
 		this.converter = converter;
@@ -21,18 +22,15 @@ public class RealCall<T> implements ICall {
 
 	@Override
 	public void cancel() {
-
+		if (null != asyncCall) {
+			asyncCall.cancel();
+		}
 	}
 
 	@Override
 	public void submit(Callback callback) {
-		AsyncCall asyncCall = new AsyncCall(this,request,converter,callback);
+		asyncCall = new AsyncCall(this, request, converter, callback);
 		asyncCall.execute();
 	}
-
-
-
-
-
 
 }
