@@ -2,7 +2,6 @@ package com.joy.smoothhttp.http;
 
 import com.joy.smoothhttp.http.data.HttpResult;
 import com.joy.smoothhttp.request.Request;
-import com.joy.smoothhttp.utils.SLog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
         Request request = getRequest();
         try {
             String urlStr = request.getHttpUrl().getUrl();
-            SLog.print("url=" + urlStr);
+           // SLog.print("url=" + urlStr);
             URL url = new URL(urlStr);
             con = (HttpURLConnection) url.openConnection();
             con.setConnectTimeout(request.getTimeOut());

@@ -3,7 +3,6 @@ package com.joy.smoothhttp.interceptor;
 import com.joy.smoothhttp.interceptor.interfaces.IInterceptor;
 import com.joy.smoothhttp.request.Request;
 import com.joy.smoothhttp.response.Response;
-import com.joy.smoothhttp.utils.SLog;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +23,6 @@ public class RealInterceptorChain implements IInterceptor.Chain {
         this.request = request;
     }
 
-
     @Override
     public Request request() {
         return request;
@@ -36,8 +34,6 @@ public class RealInterceptorChain implements IInterceptor.Chain {
     }
 
     public Response realProceed(Request request) throws IOException {
-
-        SLog.print("index="+index);
         if (index >= interceptors.size()) {
             throw new AssertionError();
         }

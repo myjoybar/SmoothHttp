@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		testConnect1();
+	//	testConnect1();
 //		testConnect2();
-		test3();
-		testConnect4();
+			test3();
+		//testConnect4();
 	}
 
 
@@ -85,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void test3(){
-//		for(int i = 0;i<1000;i++){
-//			testConnect2();
-//		}
+		for(int i = 0;i<1000;i++){
+			testConnect1();
+		}
 
 
 	}

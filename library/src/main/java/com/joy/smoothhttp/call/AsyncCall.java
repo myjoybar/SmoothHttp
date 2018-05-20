@@ -5,6 +5,7 @@ import com.joy.smoothhttp.convert.Converter;
 import com.joy.smoothhttp.http.HttpFactorySelector;
 import com.joy.smoothhttp.http.IProgress;
 import com.joy.smoothhttp.http.data.HttpResult;
+import com.joy.smoothhttp.interceptor.CallServerInterceptor;
 import com.joy.smoothhttp.interceptor.RealInterceptorChain;
 import com.joy.smoothhttp.interceptor.interfaces.IInterceptor;
 import com.joy.smoothhttp.request.Request;
@@ -45,27 +46,14 @@ public class AsyncCall<TResponse> {
 
             @Override
             protected Response doInBackground() {
-                SLog.print("doInBackground");
-                HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute
-                        (new IProgress() {
-                    @Override
-                    public void progressUpdate(long progress) {
-                        int progressNum = (int) (progress * 1.0f / getTotalLength() * 100);
-                        publishProgress(progressNum);
-                    }
-                });
-
-
-                Response response = new Response();
-                if (httpResult.getThrowable() != null) {
-                    response.setThrowable(httpResult.getThrowable());
+                try {
+                    return getResponseWithInterceptorChain();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Response response = new Response();
+                    response.setThrowable(e);
                     return response;
                 }
-                ResponseBody responseBody = new ResponseBody();
-                responseBody.setBytes(httpResult.getBytes());
-                responseBody.setString(httpResult.getResponseStr());
-                response.setResponseBody(responseBody);
-                return response;
             }
 
             @Override
@@ -94,11 +82,6 @@ public class AsyncCall<TResponse> {
     }
 
     public void execute() {
-        try {
-            getResponseWithInterceptorChain();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         asynchronousTask.execute();
     }
 
@@ -111,8 +94,31 @@ public class AsyncCall<TResponse> {
     private Response getResponseWithInterceptorChain() throws IOException {
         List<IInterceptor> interceptors = new ArrayList<>();
         interceptors.addAll(smoothHttpClient.interceptors());
+        interceptors.add(new CallServerInterceptor());
         IInterceptor.Chain chain = new RealInterceptorChain(interceptors, 0, originalRequest);
         return chain.proceed(originalRequest);
     }
+
+    private Response callServer(Request request) {
+        HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute(new IProgress() {
+            @Override
+            public void progressUpdate(long progress) {
+                int progressNum = (int) (progress * 1.0f / getTotalLength() * 100);
+                asynchronousTask.publishProgress(progressNum);
+            }
+        });
+
+        Response response = new Response();
+        if (httpResult.getThrowable() != null) {
+            response.setThrowable(httpResult.getThrowable());
+            return response;
+        }
+        ResponseBody responseBody = new ResponseBody();
+        responseBody.setBytes(httpResult.getBytes());
+        responseBody.setString(httpResult.getResponseStr());
+        response.setResponseBody(responseBody);
+        return response;
+    }
+
 
 }
