@@ -16,15 +16,15 @@ import java.io.IOException;
 
 public class CallServerInterceptor  implements IInterceptor {
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(final Chain chain) throws IOException {
 
         Request request = chain.request();
         HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute
                 (new IProgress() {
                     @Override
                     public void progressUpdate(long progress) {
-                        int progressNum = (int) (progress * 1.0f / getTotalLength() * 100);
-                       // publishProgress(progressNum);
+                        int progressNum = (int) (progress * 1.0f / getTotalLength() * 1000);
+                        chain.getAsynchronousTask().publishProgress(progressNum);
                     }
                 });
 
@@ -38,6 +38,8 @@ public class CallServerInterceptor  implements IInterceptor {
         responseBody.setBytes(httpResult.getBytes());
         responseBody.setString(httpResult.getResponseStr());
         response.setResponseBody(responseBody);
+        response.setResponseTime(System.currentTimeMillis());
+        response.setHttpUrl(request.getHttpUrl());
         return response;
     }
 

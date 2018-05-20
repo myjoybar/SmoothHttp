@@ -1,4 +1,4 @@
-package com.joy.smoothhttp.util;
+package com.joy.smoothhttp.utils;
 
 import android.support.annotation.Nullable;
 

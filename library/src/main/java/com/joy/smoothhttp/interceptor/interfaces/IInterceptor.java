@@ -9,6 +9,8 @@ import com.joy.smoothhttp.response.Response;
 
 import java.io.IOException;
 
+import me.joy.async.lib.task.AsynchronousTask;
+
 
 public interface IInterceptor {
     Response intercept(Chain chain) throws IOException;
@@ -17,6 +19,9 @@ public interface IInterceptor {
         Request request();
 
         Response proceed(Request request) throws IOException;
+
+        AsynchronousTask<Integer, Response> getAsynchronousTask();
+
 
     }
 }

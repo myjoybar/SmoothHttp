@@ -1,7 +1,7 @@
 package com.joy.smoothhttp.request.header;
 
-import com.joy.smoothhttp.util.CheckUtils;
-import com.joy.smoothhttp.util.Utils;
+import com.joy.smoothhttp.utils.CheckUtils;
+import com.joy.smoothhttp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -54,6 +54,7 @@ public class AsyncCall<TResponse> {
                     response.setThrowable(e);
                     return response;
                 }
+                //return callServer(request);
             }
 
             @Override
@@ -95,7 +96,8 @@ public class AsyncCall<TResponse> {
         List<IInterceptor> interceptors = new ArrayList<>();
         interceptors.addAll(smoothHttpClient.interceptors());
         interceptors.add(new CallServerInterceptor());
-        IInterceptor.Chain chain = new RealInterceptorChain(interceptors, 0, originalRequest);
+        IInterceptor.Chain chain = new RealInterceptorChain(originalRequest, asynchronousTask,
+                interceptors, 0);
         return chain.proceed(originalRequest);
     }
 

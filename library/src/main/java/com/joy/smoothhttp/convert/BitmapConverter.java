@@ -18,7 +18,6 @@ public class BitmapConverter<T> implements Converter<T> {
 		if (bytes == null) {
 			return null;
 		}
-		SLog.print("BitmapConverter");
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		//设置该属性可以不占用内存，并且能够得到bitmap的宽高等属性，此时得到的bitmap是空
 		options.inJustDecodeBounds = true;
@@ -29,12 +28,5 @@ public class BitmapConverter<T> implements Converter<T> {
 		options.inJustDecodeBounds = false;
 		bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
 		return (T) bitmap;
-
-
 	}
-
-
-
-
-
 }

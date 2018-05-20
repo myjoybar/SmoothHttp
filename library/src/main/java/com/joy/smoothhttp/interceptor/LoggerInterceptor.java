@@ -14,7 +14,6 @@ import java.util.Locale;
 
 public class LoggerInterceptor implements IInterceptor {
 
-
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
@@ -26,6 +25,5 @@ public class LoggerInterceptor implements IInterceptor {
         String content = response.getResponseBody().getString();
         SLog.print("response body:" + content);
         return response;
-
     }
 }
