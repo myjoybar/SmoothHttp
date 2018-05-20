@@ -1,5 +1,6 @@
 package com.joy.smoothhttp.http;
 
+import com.joy.smoothhttp.http.data.HttpResult;
 import com.joy.smoothhttp.request.Request;
 
 /**
@@ -7,6 +8,16 @@ import com.joy.smoothhttp.request.Request;
  */
 
 public abstract class AbstractHttpExecutor implements IHttpExecutor {
+    @Override
+    public HttpResult execute() {
+        return null;
+    }
+
+    @Override
+    public HttpResult execute(IProgress progress) {
+        return null;
+    }
+
     protected Request request;
 
     public Request getRequest() {
@@ -16,4 +27,6 @@ public abstract class AbstractHttpExecutor implements IHttpExecutor {
     public AbstractHttpExecutor(Request request) {
         this.request = request;
     }
+
+
 }

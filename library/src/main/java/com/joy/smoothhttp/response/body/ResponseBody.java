@@ -6,7 +6,7 @@ package com.joy.smoothhttp.response.body;
 
 public class ResponseBody {
 
-//	String string;
+	String string;
 //	Reader charStream;
 //	Bitmap bitmap;
 //	InputStream byteStream;
@@ -18,5 +18,13 @@ public class ResponseBody {
 
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
+	}
+
+	public String getString() {
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
 	}
 }

@@ -29,8 +29,10 @@ public class RealCall<T> implements ICall {
 
 	@Override
 	public void submit(Callback callback) {
-		asyncCall = new AsyncCall(this, request, converter, callback);
+		asyncCall = new AsyncCall(smoothHttpClient,this, request, converter, callback);
 		asyncCall.execute();
 	}
+
+
 
 }

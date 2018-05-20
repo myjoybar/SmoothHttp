@@ -5,7 +5,9 @@ package com.joy.smoothhttp.call;
  */
 
 public interface Callback<TResponse> {
-	void onFailure(ICall call, Throwable throwable);
+    void onFailure(ICall call, Throwable throwable);
 
-	void onResponse(ICall call, TResponse response) ;
+    void onResponse(ICall call, TResponse response);
+
+    void onProgressUpdate(ICall call, int values);
 }

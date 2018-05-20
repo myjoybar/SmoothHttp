@@ -8,5 +8,6 @@ import com.joy.smoothhttp.http.data.HttpResult;
 
 public interface IHttpExecutor {
 	HttpResult execute();
+	HttpResult execute(IProgress progress);
 
 }

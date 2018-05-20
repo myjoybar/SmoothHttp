@@ -7,6 +7,8 @@ package com.joy.smoothhttp.http.data;
 public class HttpResult {
 	private Throwable throwable;
 	private byte[] bytes;
+	private int contentLength;
+	private String responseStr;
 
 	public HttpResult() {
 	}
@@ -25,5 +27,21 @@ public class HttpResult {
 
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
+	}
+
+	public int getContentLength() {
+		return contentLength;
+	}
+
+	public void setContentLength(int contentLength) {
+		this.contentLength = contentLength;
+	}
+
+	public String getResponseStr() {
+		return responseStr;
+	}
+
+	public void setResponseStr(String responseStr) {
+		this.responseStr = responseStr;
 	}
 }
