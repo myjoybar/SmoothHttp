@@ -27,7 +27,6 @@ public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
         Request request = getRequest();
         try {
             String urlStr = request.getHttpUrl().getUrl();
-           // SLog.print("url=" + urlStr);
             URL url = new URL(urlStr);
             con = (HttpURLConnection) url.openConnection();
             con.setConnectTimeout(request.getTimeOut());

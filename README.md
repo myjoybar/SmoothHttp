@@ -158,7 +158,59 @@ public class LoggerInterceptor implements IInterceptor {
 
 
 ```
+### 3 . 添加自定义网络请求器
+只需继承AbstractHttpExecutor接口，实现execute方法即可，以HttpUrlConnectionExecutor为例：
 
+
+```java
+public class HttpUrlConnectionExecutor extends AbstractHttpExecutor {
+
+
+    public HttpUrlConnectionExecutor(Request requestOrder) {
+        super(requestOrder);
+    }
+
+    @Override
+    public HttpResult execute(IProgress iProgress) {
+        HttpResult httpResult = new HttpResult();
+        HttpURLConnection con = null;
+        Request request = getRequest();
+        try {
+            String urlStr = request.getHttpUrl().getUrl();
+            URL url = new URL(urlStr);
+            con = (HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(request.getTimeOut());
+            con.setReadTimeout(request.getTimeOut());
+            con.setDoInput(true);
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                int contentLength = con.getContentLength();
+                httpResult.setContentLength(contentLength);
+                iProgress.setTotalLength(contentLength);
+                byte[] bytes = inputStream2ByteArr(contentLength, con.getInputStream(), iProgress);
+                httpResult.setBytes(bytes);
+                httpResult.setResponseStr(new String(bytes, "UTF-8"));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            httpResult.setThrowable(e);
+        } finally {
+            if (con != null) {
+                con.disconnect();
+            }
+        }
+        return httpResult;
+
+```
+
+然后在CallServerInterceptor中注册即可使用
+
+```java
+ HttpFactorySelector.getInstance().register(new HttpUrlConnectionExecutor(request));
+```
 #### 更多扩展功能添加完善中……
 ## License
 

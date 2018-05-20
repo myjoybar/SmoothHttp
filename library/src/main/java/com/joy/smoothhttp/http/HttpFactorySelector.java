@@ -6,10 +6,9 @@ import com.joy.smoothhttp.request.Request;
  * Created by joybar on 11/05/2018.
  */
 
-public class HttpFactorySelector{
+public class HttpFactorySelector {
 
     public HttpFactorySelector() {
-
     }
 
     public static HttpFactorySelector getInstance() {
