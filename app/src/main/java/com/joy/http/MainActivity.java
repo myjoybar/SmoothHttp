@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 		call.submit(new AbCallback<String>() {
 			@Override
 			public void onFailure(ICall call, Throwable throwable) {
-				SLog.print("onFailure="+throwable.getMessage());
+				SLog.printInfo("onFailure="+throwable.getMessage());
 			}
 
 			@Override
 			public void onResponse(ICall call, String s) {
-				SLog.print("onResponse="+s);
+				SLog.printInfo("onResponse="+s);
 			}
 
 		});
@@ -73,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
 		call.submit(new AbCallback<Weather>() {
 			@Override
 			public void onFailure(ICall call, Throwable throwable) {
-				SLog.print("onFailure="+throwable.getMessage());
+				SLog.printInfo("onFailure="+throwable.getMessage());
 			}
 
 			@Override
 			public void onResponse(ICall call, Weather weather) {
-				SLog.print("onResponse="+weather.toString());
+				SLog.printInfo("onResponse="+weather.toString());
 			}
 		});
 
@@ -114,18 +114,18 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onFailure(ICall call, Throwable throwable) {
-				SLog.print("onFailure="+throwable.getMessage());
+				SLog.printInfo("onFailure="+throwable.getMessage());
 			}
 
 			@Override
 			public void onResponse(ICall call, Bitmap bitmap) {
-				SLog.print("onResponse="+bitmap.toString());
+				SLog.printInfo("onResponse="+bitmap.toString());
 			}
 
 			@Override
 			public void onProgressUpdate(ICall call, int values) {
 				super.onProgressUpdate(call, values);
-				SLog.print("onProgressUpdate="+values);
+				SLog.printInfo("onProgressUpdate="+values);
 			}
 		});
 

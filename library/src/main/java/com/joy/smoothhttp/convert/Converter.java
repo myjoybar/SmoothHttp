@@ -1,5 +1,7 @@
 package com.joy.smoothhttp.convert;
 
+import com.joy.smoothhttp.response.Response;
+
 import java.io.IOException;
 
 /**
@@ -7,5 +9,5 @@ import java.io.IOException;
  */
 
 public interface Converter<T> {
-	T convert(byte[] bytes) throws IOException;
+	T convert(Response response) throws IOException;
 }

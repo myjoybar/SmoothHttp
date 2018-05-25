@@ -5,6 +5,7 @@ import android.util.LruCache;
 import com.joy.smoothhttp.interceptor.interfaces.IInterceptor;
 import com.joy.smoothhttp.request.Request;
 import com.joy.smoothhttp.response.Response;
+import com.joy.smoothhttp.utils.SLog;
 
 import java.io.IOException;
 
@@ -47,6 +48,7 @@ public class CacheInterceptor implements IInterceptor {
 
         Response cache = getFromMemoryCache(url);
         if (cache != null) {
+            SLog.printInfo("load form cache");
             return cache;
         }
         Response response = chain.proceed(chain.request());

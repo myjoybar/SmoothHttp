@@ -19,11 +19,15 @@ public class LoggerInterceptor implements IInterceptor {
         Request request = chain.request();
         long t1 = System.nanoTime();//请求发起的时间
         Response response = chain.proceed(chain.request());
+        if (response.getThrowable() != null) {
+            SLog.printError("LoggerInterceptor error: " + response.getThrowable().getMessage());
+            return response;
+        }
         long t2 = System.nanoTime();
-        SLog.print(String.format(Locale.getDefault(), "Received response for %s in %.1fms",
+        SLog.printInfo(String.format(Locale.getDefault(), "Received response for %s in %.1fms",
                 request.getHttpUrl().getUrl(), (t2 - t1) / 1e6d));
         String content = response.getResponseBody().getString();
-        SLog.print("response body:" + content);
+        SLog.printInfo("response body:" + content);
         return response;
     }
 }

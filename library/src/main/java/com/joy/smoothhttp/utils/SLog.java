@@ -14,9 +14,14 @@ public class SLog {
 		SLog.enable = enable;
 	}
 
-	public static void print(String msg) {
+	public static void printInfo(String msg) {
 		if (enable) {
 			Log.d(TAG, msg);
+		}
+	}
+	public static void printError(String msg) {
+		if (enable) {
+			Log.e(TAG, msg);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.joy.smoothhttp.convert;
 
+import com.joy.smoothhttp.response.Response;
 import com.joy.smoothhttp.utils.GsonUtil;
 
 import java.io.IOException;
@@ -17,7 +18,8 @@ public class GsonConverter<T> implements Converter<T> {
 	}
 
 	@Override
-	public T convert(byte[] bytes) throws IOException {
+	public T convert(Response response) throws IOException {
+		byte[] bytes = response.getResponseBody().getBytes();
 		String jsonStr = new String(bytes, "UTF-8");
 		return GsonUtil.parseJsonStrToBean(jsonStr, type);
 

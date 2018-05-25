@@ -3,7 +3,7 @@ package com.joy.smoothhttp.convert;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.joy.smoothhttp.utils.SLog;
+import com.joy.smoothhttp.response.Response;
 
 import java.io.IOException;
 
@@ -12,9 +12,9 @@ import java.io.IOException;
  */
 
 public class BitmapConverter<T> implements Converter<T> {
-
 	@Override
-	public T convert(byte[] bytes) throws IOException {
+	public T convert(Response response) throws IOException {
+		byte[] bytes = response.getResponseBody().getBytes();
 		if (bytes == null) {
 			return null;
 		}

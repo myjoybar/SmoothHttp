@@ -67,12 +67,11 @@ public class AsyncCall<TResponse> {
             protected void onPostExecute(Response response) {
                 super.onPostExecute(response);
                 if (response.getThrowable() != null) {
-                    SLog.print("callback.onFailure" + response.getThrowable().getMessage());
+                    SLog.printInfo("callback.onFailure" + response.getThrowable().getMessage());
                     callback.onFailure(iCall, response.getThrowable());
                 } else {
                     try {
-                        callback.onResponse(iCall, (TResponse) converter.convert(response
-                                .getResponseBody().getBytes()));
+                        callback.onResponse(iCall, (TResponse) converter.convert(response));
                     } catch (IOException e) {
                         e.printStackTrace();
                         callback.onFailure(iCall, e);

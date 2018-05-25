@@ -8,12 +8,12 @@ import java.io.IOException;
  * Created by joybar on 2018/5/16.
  */
 
-public class StringConverter<T> implements Converter<T> {
+public class ResponseConverter<T> implements Converter<T> {
 
 
 	@Override
 	public T convert(Response response) throws IOException {
-		return (T) response.getResponseBody().getString();
+		return (T) response;
 
 	}
 

@@ -7,6 +7,7 @@ import com.joy.smoothhttp.interceptor.interfaces.IInterceptor;
 import com.joy.smoothhttp.request.Request;
 import com.joy.smoothhttp.response.Response;
 import com.joy.smoothhttp.response.body.ResponseBody;
+import com.joy.smoothhttp.utils.SLog;
 
 import java.io.IOException;
 
@@ -32,11 +33,13 @@ public class CallServerInterceptor  implements IInterceptor {
         Response response = new Response();
         if (httpResult.getThrowable() != null) {
             response.setThrowable(httpResult.getThrowable());
+            SLog.printError("CallServerInterceptor error: " + httpResult.getThrowable().getMessage());
             return response;
         }
         ResponseBody responseBody = new ResponseBody();
         responseBody.setBytes(httpResult.getBytes());
         responseBody.setString(httpResult.getResponseStr());
+        responseBody.setByteStream(httpResult.getInputStream());
         response.setResponseBody(responseBody);
         response.setResponseTime(System.currentTimeMillis());
         response.setHttpUrl(request.getHttpUrl());
