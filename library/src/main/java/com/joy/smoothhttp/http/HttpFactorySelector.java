@@ -35,7 +35,6 @@ public class HttpFactorySelector {
 
     private AbstractHttpExecutor getDefaultLoader(Request request) {
 
-
         AbstractHttpExecutor abstractLoader = new HttpUrlConnectionExecutor(request);
         return abstractLoader;
     }

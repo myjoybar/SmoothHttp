@@ -100,7 +100,7 @@ public class AsyncCall<TResponse> {
         return chain.proceed(originalRequest);
     }
 
-    private Response callServer(Request request) {
+    private Response callServer(Request request) throws IOException {
         HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute(new IProgress() {
             @Override
             public void progressUpdate(long progress) {

@@ -1,5 +1,6 @@
 package com.joy.smoothhttp.interceptor;
 
+import com.joy.smoothhttp.http.AbstractHttpExecutor;
 import com.joy.smoothhttp.http.HttpFactorySelector;
 import com.joy.smoothhttp.http.IProgress;
 import com.joy.smoothhttp.http.data.HttpResult;
@@ -15,25 +16,26 @@ import java.io.IOException;
  * Created by joybar on 20/05/2018.
  */
 
-public class CallServerInterceptor  implements IInterceptor {
+public class CallServerInterceptor implements IInterceptor {
     @Override
     public Response intercept(final Chain chain) throws IOException {
 
         Request request = chain.request();
-        HttpResult httpResult = HttpFactorySelector.getInstance().get(request).execute
-                (new IProgress() {
-                    @Override
-                    public void progressUpdate(long progress) {
-                        int progressNum = (int) (progress * 1.0f / getTotalLength() * 1000);
-                        chain.getAsynchronousTask().publishProgress(progressNum);
-                    }
-                });
+        AbstractHttpExecutor httpExecutor = HttpFactorySelector.getInstance().get(request);
+        HttpResult httpResult = httpExecutor.execute(new IProgress() {
+            @Override
+            public void progressUpdate(long progress) {
+                int progressNum = (int) (progress * 1.0f / getTotalLength() * 1000);
+                chain.getAsynchronousTask().publishProgress(progressNum);
+            }
+        });
 
 
         Response response = new Response();
         if (httpResult.getThrowable() != null) {
             response.setThrowable(httpResult.getThrowable());
-            SLog.printError("CallServerInterceptor error: " + httpResult.getThrowable().getMessage());
+            SLog.printError("CallServerInterceptor error: " + httpResult.getThrowable()
+                    .getMessage());
             return response;
         }
         ResponseBody responseBody = new ResponseBody();
