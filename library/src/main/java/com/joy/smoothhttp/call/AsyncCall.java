@@ -37,7 +37,7 @@ public class AsyncCall<TResponse> {
         this.iCall = iCall;
         this.callback = callback;
         this.originalRequest = request;
-        asynchronousTask = new AsynchronousTask<Integer, Response>() {
+        asynchronousTask = new AsynchronousTask<Integer, Response>(originalRequest.getMaxRunningTaskNumber()) {
 
             @Override
             protected void onPreExecute() {

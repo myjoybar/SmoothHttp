@@ -16,6 +16,7 @@ public final class Request {
     private final String method;
     private final int timeOut;
     private final int redirects;
+    private final int maxRunningTaskNumber;
 
 
     public Request(Builder builder) {
@@ -25,6 +26,7 @@ public final class Request {
         method = builder.method;
         timeOut = builder.timeOut;
         redirects = builder.redirects;
+        maxRunningTaskNumber = builder.maxRunningTaskNumber;
     }
 
 
@@ -57,6 +59,10 @@ public final class Request {
         return redirects;
     }
 
+    public int getMaxRunningTaskNumber() {
+        return maxRunningTaskNumber;
+    }
+
     public static class Builder {
         HttpUrl httpUrl;
         RequestHeader header;
@@ -64,6 +70,7 @@ public final class Request {
         String method;
         int timeOut = 5 * 1000;
         int redirects = 5;
+        int maxRunningTaskNumber = 64;
 
         public Builder setHttpUrl(String url) {
             this.httpUrl = new HttpUrl.Builder().setUrl(url).build();
@@ -92,6 +99,11 @@ public final class Request {
 
         public Builder setRedirects(int redirects) {
             this.redirects = redirects;
+            return this;
+        }
+
+        public Builder setMaxRunningTaskNumber(int maxRunningTaskNumber) {
+            this.maxRunningTaskNumber = maxRunningTaskNumber;
             return this;
         }
 
